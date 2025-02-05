@@ -13,8 +13,8 @@ public class Calculation {
     this.calculation = calculation;
   }
 
-  public double calculate() {
+  public Result calculate() {
     Expression expression = new ExpressionBuilder(calculation).build();
-    return expression.evaluate();
+    return new Result(expression.evaluate());
   }
 }
