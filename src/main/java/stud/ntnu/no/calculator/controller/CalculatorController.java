@@ -4,21 +4,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
 import stud.ntnu.no.calculator.model.Calculation;
 import stud.ntnu.no.calculator.model.Result;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @org.springframework.web.bind.annotation.RestController
 public class CalculatorController {
+  private static final Logger logger = LogManager.getLogger(CalculatorController.class);
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/calculate")
   public ResponseEntity<Result> calculateResult(@RequestBody Calculation calculation) {
-    System.out.println(calculation.getCalculation());//TODO Replace with logger
+    logger.info("Requested calculation: " + calculation.getCalculation());
     Result result;
     try {
       result = calculation.calculate();
-      System.out.println(result);//TODO replace with logger
+      logger.info("calculation successful, result: " + result.getResult());
     } catch (Exception e) {
+      logger.error("Error: " + e.getMessage());
       return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.ok(result);
